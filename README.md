@@ -6,6 +6,23 @@ The Most beautiful kotlin and java code ever written for [AOC](https://adventofc
 
 Guaranteed I will finish all days.
 
+
+## Configuration
+`JDK 17+`
+
+Set AOC session token in your `~/.gradle/gradle.properties` to download the puzzle input.
+```
+AOC_TOKEN=abc123
+```
+
+<details>
+<summary>How to get session token.</summary>
+
+1. Authenticate at [https://adventofcode.com](https://adventofcode.com).
+2. Open Web dev tools(cmd + opt + i) -> Storage tab
+3. Copy `session` value
+</details>
+
 ## Usage
 
 #### Build
@@ -21,6 +38,12 @@ Guaranteed I will finish all days.
 `./gradlew test`
 
 #### Create new Module
-`./gradlew newModule -PmoduleName=2023:day02 -Plang=kotlin`
-
+`./gradlew newModule -PmoduleName=2023:day02 -Plang=kotlin`\
 valid langs = [kotlin | java]
+
+#### Download puzzle input
+`./gradlew 2023:day01:downloadPuzzleInput`
+
+#### Clean puzzle input
+`./gradlew 2023:day01:cleanPuzzleInput`\
+Note: `clean` does NOT depend on this.

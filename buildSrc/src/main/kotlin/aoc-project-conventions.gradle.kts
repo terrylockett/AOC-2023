@@ -1,4 +1,9 @@
 import org.gradle.accessors.dm.LibrariesForLibs
+import org.jetbrains.kotlin.gradle.internal.ensureParentDirsCreated
+import java.net.URI
+import java.net.http.HttpClient
+import java.net.http.HttpRequest
+import java.net.http.HttpResponse.BodyHandlers
 
 plugins {
     application
@@ -39,4 +44,66 @@ spotless {
         target("*.gradle.kts")
         ktlint()
     }
+}
+
+
+tasks.register<Delete>("cleanPuzzleInput") {
+    group = "Advent of Code"
+    delete(project.projectDir.path + "/src/main/resources/input.txt")
+}
+
+val downloadPuzzleInputTask = tasks.register("downloadPuzzleInput") {
+    group = "Advent of Code"
+
+    val puzzleInputFilePath = project.projectDir.path + "/src/main/resources/input.txt"
+    val puzzleInputFile = File(puzzleInputFilePath)
+
+    outputs.file(puzzleInputFile)
+    onlyIf { !puzzleInputFile.exists() }
+
+    if (!project.hasProperty("AOC_TOKEN")) {
+        throw GradleException("Missing property: AOC_TOKEN. See README for configuration information.")
+    }
+    val aocToken = project.property("AOC_TOKEN")
+
+    val urlBase = project.property("aoc-url")
+
+    val projectNameTokens = project.path
+        .split(":")
+        .filter { it.isNotEmpty() }
+
+    if (projectNameTokens.size != 2) {
+        throw GradleException("Not enough tokens in project path.")
+    }
+
+    doLast {
+        puzzleInputFile.ensureParentDirsCreated()
+        puzzleInputFile.createNewFile()
+
+        val year = projectNameTokens[0]
+        var day = projectNameTokens[1].substring("day".length)
+        if (day.startsWith("0")) {
+            day = day.substring(1)
+        }
+
+        val url = "${urlBase}/${year}/day/${day}/input"
+
+        val request = HttpRequest.newBuilder()
+            .GET()
+            .uri(URI.create(url))
+            .setHeader("COOKIE", "session=${aocToken}")
+            .build()
+
+        val response = HttpClient.newHttpClient().send(request, BodyHandlers.ofString())
+
+        if (response.body().isNotEmpty()) {
+            puzzleInputFile.writeText(response.body())
+        } else {
+            throw GradleException("Empty body when downloading input file from $url")
+        }
+    }
+}
+
+tasks.getByName("processResources"){
+    dependsOn(downloadPuzzleInputTask)
 }

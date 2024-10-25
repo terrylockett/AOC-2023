@@ -40,9 +40,8 @@ tasks.register("newModule") {
         createAndPopulateFile("$srcTestJava/Test${capitalizeFirstChar(projectName)}.java", year, projectName, testClassContentsJava)
     }
 
-    val srcMainResource = createDir("${projectDir.path}/src/main/resources/")
+    createDir("${projectDir.path}/src/main/resources/")
     val srcTestResource = createDir("${projectDir.path}/src/test/resources/")
-    File("$srcMainResource/input.txt").createNewFile()
     File("$srcTestResource/test-input.txt").createNewFile()
 }
 

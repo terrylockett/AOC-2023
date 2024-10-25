@@ -1,5 +1,6 @@
 rootProject.name = "AdventOfCode"
 
+includeSubprojects("2015")
 includeSubprojects("2022")
 includeSubprojects("2023")
 includeSubprojects("common")

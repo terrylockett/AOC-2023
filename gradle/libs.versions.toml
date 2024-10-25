@@ -1,4 +1,6 @@
 [libraries]
+
+commonsCodec = {module = 'commons-codec:commons-codec', version = '1.17.1'}
 commonsIo = { module = 'commons-io:commons-io', version = '2.6' }
 guava = { module = "com.google.guava:guava", version = "31.1-jre" }
 junitJupiterCore = { module = "org.junit.jupiter:junit-jupiter", version = "5.9.3" }

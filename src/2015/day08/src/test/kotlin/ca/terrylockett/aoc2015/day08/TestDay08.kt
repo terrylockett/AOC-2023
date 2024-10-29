@@ -9,15 +9,15 @@ import org.junit.jupiter.api.TestInstance
 class TestDay08 {
 
 	@Test
-	fun testMemSize() {
-		assertEquals(0, memorySize("\"\""))
-		assertEquals(3, memorySize("\"abc\""))
-		assertEquals(7, memorySize("\"aaa\\\"aaa\""))
-		assertEquals(1, memorySize("\"\\x27\""))
-		assertEquals(2, memorySize("\"\\x22v\""))
+	fun testDecodeMemSize() {
+		assertEquals(0, decodedMemorySize("\"\""))
+		assertEquals(3, decodedMemorySize("\"abc\""))
+		assertEquals(7, decodedMemorySize("\"aaa\\\"aaa\""))
+		assertEquals(1, decodedMemorySize("\"\\x27\""))
+		assertEquals(2, decodedMemorySize("\"\\x22v\""))
 
-		assertEquals(2, memorySize("\"\\xaa\\xbb\""))
-		assertEquals(2, memorySize("\"\\\\\\\\\""))
+		assertEquals(2, decodedMemorySize("\"\\xaa\\xbb\""))
+		assertEquals(2, decodedMemorySize("\"\\\\\\\\\""))
 	}
 
 	@Test
@@ -26,9 +26,18 @@ class TestDay08 {
 		assertEquals(12, part1(inputFilePath))
 	}
 
-//    @Test
-//    fun part2() {
-//        val inputFilePath = Resources.getInputFilePath("test-input.txt").orElseThrow()
-//        assertEquals(0, 0)
-//    }
+	@Test
+	fun testEncodeMemSize() {
+		assertEquals(6, encodedMemorySize("\"\""))
+		assertEquals(9, encodedMemorySize("\"abc\""))
+
+		assertEquals(16, encodedMemorySize("\"aaa\\\"aaa\""))
+		assertEquals(11, encodedMemorySize("\"\\x27\""))
+	}
+
+	@Test
+	fun part2() {
+		val inputFilePath = Resources.getInputFilePath("test-input.txt").orElseThrow()
+		assertEquals(19, part2(inputFilePath))
+	}
 }

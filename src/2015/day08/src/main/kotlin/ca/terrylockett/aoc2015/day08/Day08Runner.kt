@@ -5,23 +5,50 @@ import java.io.File
 
 fun main() {
 	val inputFile: String = Resources.getInputFilePath("input.txt").orElseThrow()
-
 	println("2015 day08 part1: ${part1(inputFile)}")
-	// println("2015 day08 part2: TODO")
+	println("2015 day08 part2: ${part2(inputFile)}")
 }
 
-fun part1(inputfilePath: String): Int {
+fun part1(inputFilePath: String): Int {
 	var memLengthTotal = 0
 	var strLengthTotal = 0
 
-	File(inputfilePath).forEachLine { line ->
+	File(inputFilePath).forEachLine { line ->
 		strLengthTotal += line.length
-		memLengthTotal += memorySize(line)
+		memLengthTotal += decodedMemorySize(line)
 	}
 	return strLengthTotal - memLengthTotal
 }
 
-fun memorySize(escapedString: String): Int {
+fun part2(inputFilePath: String): Int {
+	var memLengthTotal = 0
+	var strLengthTotal = 0
+
+	File(inputFilePath).forEachLine { line ->
+		strLengthTotal += line.length
+		memLengthTotal += encodedMemorySize(line)
+	}
+	return memLengthTotal - strLengthTotal
+}
+
+fun encodedMemorySize(string: String): Int {
+	val chars = string.toCharArray()
+	var memLength = string.length
+	var i = 0
+
+	while (i < chars.size) {
+		val char = chars[i]
+
+		when (char) {
+			'"', '\\' -> memLength++.also { i++ }
+			else -> i++
+		}
+	}
+
+	return memLength + 2 // +2 for surrounding quotes
+}
+
+fun decodedMemorySize(escapedString: String): Int {
 	val chars = escapedString.toCharArray()
 	var memLength = escapedString.length
 	var i = 0

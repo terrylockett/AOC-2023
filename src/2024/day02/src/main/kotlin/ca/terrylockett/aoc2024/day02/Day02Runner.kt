@@ -7,8 +7,29 @@ import kotlin.math.abs
 fun main() {
 	val inputFile: String = Resources.getInputFilePath("input.txt").orElseThrow()
 
-	 println("2024 day02 part1: ${part01(inputFile)}")
-	// println("2024 day02 part2: TODO")
+	println("2024 day02 part1: ${part01(inputFile)}")
+	println("2024 day02 part2: ${part02(inputFile)}")
+}
+
+fun checkRecord(tokens: List<Int>): Boolean {
+	val initialDiff = tokens[0] - tokens[1]
+	val isIncreasing = when {
+		initialDiff > 0 -> false
+		initialDiff < 0 -> true
+		else -> return false
+	}
+
+	for (diff in tokens.zipWithNext { left, right -> right - left }) {
+		if (abs(diff) > 3) {
+			return false
+		}
+		when (isIncreasing) {
+			true -> if (diff <= 0) return false
+			false -> if (diff >= 0) return false
+		}
+	}
+	
+	return true
 }
 
 fun part01(inputFile: String): Int {
@@ -17,32 +38,34 @@ fun part01(inputFile: String): Int {
 	File(inputFile).forEachLine { line: String ->
 		val tokens = line.split(" ").map { it.toInt() }
 
-		val initialDiff = tokens[0] - tokens[1]
-		val isInc = when {
-			initialDiff > 0 -> false
-			initialDiff < 0 -> true
-			else -> return@forEachLine
+		if (checkRecord(tokens)) {
+			totalSafeRecords++
 		}
+	}
 
-		for ((index, current) in tokens.withIndex()) {
-			if (index == tokens.size - 1) {
-				break
-			}
+	return totalSafeRecords
+}
 
-			val next = tokens[index + 1]
+fun part02(inputFile: String): Int {
+	var totalSafeRecords = 0
 
-			val diff = next - current
+	File(inputFile).forEachLine { line: String ->
+		val tokens = line.split(" ").map { it.toInt() }
+
+		if (checkRecord(tokens)) {
+			totalSafeRecords++
+			return@forEachLine
+		}
+		
+		for (i in tokens.indices) {
+			val tmpTokens = tokens.toIntArray().copyOf().toList().toMutableList()
+			tmpTokens.removeAt(i)
 			
-			if (abs(diff) > 3) {
+			if (checkRecord(tmpTokens)) {
+				totalSafeRecords++
 				return@forEachLine
 			}
-			when (isInc) {
-				true -> if (next - current <= 0) return@forEachLine
-				false -> if (next - current >= 0) return@forEachLine
-			}
 		}
-
-		totalSafeRecords++
 	}
 
 	return totalSafeRecords

@@ -1,17 +1,16 @@
 package ca.terrylockett.aoc2024.day04
 
 import ca.terrylockett.aoccommon.resources.Resources
-import java.io.File
 
 fun main() {
-	val inputFile: String = Resources.getInputFilePath("input.txt").orElseThrow()
+	val input: String = Resources.getInput("input.txt").orElseThrow()
 
-	println("2024 day04 part1: ${part1(inputFile)}")
-	println("2024 day04 part2: ${part2(inputFile)}")
+	println("2024 day04 part1: ${part1(input)}")
+	println("2024 day04 part2: ${part2(input)}")
 }
 
-fun part2(inputFile: String): Int {
-	val grid = makeGrid(inputFile)
+fun part2(input: String): Int {
+	val grid = makeGrid(input)
 	var total = 0
 
 	val maxRow = grid.size - 1
@@ -37,8 +36,8 @@ fun part2(inputFile: String): Int {
 	return total
 }
 
-fun part1(inputFile: String): Int {
-	val grid = makeGrid(inputFile)
+fun part1(input: String): Int {
+	val grid = makeGrid(input)
 
 	var total = 0
 
@@ -69,14 +68,13 @@ fun part1(inputFile: String): Int {
 	return total
 }
 
-fun makeGrid(inputFile: String): Array<CharArray> {
-	val file = File(inputFile)
-	val rows = file.readLines().first().length
-	val cols = file.readLines().size
+fun makeGrid(input: String): Array<CharArray> {
+	val rows = input.lines().first().length
+	val cols = input.lines().size - 1
 
 	val grid = Array(rows) { CharArray(cols) }
 
-	for ((i, line) in file.readLines().withIndex()) {
+	for ((i, line) in input.lines().withIndex()) {
 		grid[i] = line.toCharArray()
 	}
 

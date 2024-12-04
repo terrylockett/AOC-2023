@@ -9,12 +9,23 @@ plugins {
     application
     com.diffplug.spotless
     kotlin
+    me.champeau.jmh
 }
 
-val libs = the<LibrariesForLibs>()
+jmh {
+    benchmarkMode = listOf("SingleShotTime")
+    failOnError = true
+    timeUnit = "ms"
+    forceGC = true
+    fork = 0
+}
+//Always rerun bench
+tasks.getByName("jmh").outputs.upToDateWhen { false }
 
+val libs = the<LibrariesForLibs>()
 dependencies {
     implementation(project(":common:resources"))
+    jmh(project(":common:resources"))
     testImplementation(libs.junitJupiterCore)
 }
 
@@ -52,7 +63,7 @@ tasks.register<Delete>("cleanPuzzleInput") {
     delete(project.projectDir.path + "/src/main/resources/input.txt")
 }
 
-val downloadPuzzleInputTask = tasks.register("downloadPuzzleInput") {
+val downloadPuzzleInputTask: TaskProvider<Task> = tasks.register("downloadPuzzleInput") {
     group = "Advent of Code"
 
     val puzzleInputFilePath = project.projectDir.path + "/src/main/resources/input.txt"

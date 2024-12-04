@@ -10,13 +10,13 @@ class TestDay04 {
 
 	@Test
 	fun part1() {
-		val inputFilePath = Resources.getInputFilePath("test-input.txt").orElseThrow()
-		assertEquals(18, part1(inputFilePath))
+		val input = Resources.getInput("test-input.txt").orElseThrow()
+		assertEquals(18, part1(input))
 	}
 
 	@Test
 	fun part2() {
-		val inputFilePath = Resources.getInputFilePath("test-input.txt").orElseThrow()
-		assertEquals(9, part2(inputFilePath))
+		val input = Resources.getInput("test-input.txt").orElseThrow()
+		assertEquals(9, part2(input))
 	}
 }

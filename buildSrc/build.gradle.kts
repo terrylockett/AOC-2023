@@ -3,13 +3,15 @@ plugins {
     `kotlin-dsl`
 }
 
-dependencies {
-    implementation(libs.spotless)
-    implementation(libs.kotlinJvmPlugin)
-    implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
-    
-}
-
 repositories {
     mavenCentral()
+    gradlePluginPortal()
 }
+
+dependencies {
+    implementation(libs.spotless)
+    implementation(libs.jmhPlugin)
+    implementation(libs.kotlinJvmPlugin)
+    implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
+}
+

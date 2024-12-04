@@ -35,7 +35,10 @@ AOC_TOKEN=abc123
 `./gradlew 2023:day01:spotlessApply`
 
 #### Test
-`./gradlew test`
+`./gradlew 2023:day01test`
+
+#### Benchmark
+`./gradlew 2024:day03:jmh`
 
 #### Create new Module
 `./gradlew newModule -PmoduleName=2023:day02 -Plang=kotlin`\

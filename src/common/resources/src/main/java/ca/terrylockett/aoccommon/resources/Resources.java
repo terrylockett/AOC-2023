@@ -1,6 +1,8 @@
 package ca.terrylockett.aoccommon.resources;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Optional;
@@ -11,6 +13,25 @@ public class Resources {
 		//top secret hidden constructor.
 	}
 
+	public static Optional<String> getInput(String fileName) {
+		var inputStream = ClassLoader.getSystemResourceAsStream(fileName);
+		if (null == inputStream) {
+			return Optional.empty();
+		}
+		
+		try {
+			String fileContents = new String(inputStream.readAllBytes());
+			if (fileContents.endsWith("\n")) {
+				fileContents = fileContents.substring(0, fileContents.lastIndexOf('\n'));
+			}
+			return Optional.of(fileContents);
+		}
+		catch (IOException e) {
+			System.out.println(e);
+			return Optional.empty()	;
+		}
+	}
+	
 	/**
 	 * This is an odd way to get files, but I think its cute, so it says. <3
 	 * <br/><br/>
@@ -26,6 +47,8 @@ public class Resources {
 		if (resource == null) {
 			return Optional.empty();
 		}
+		
+		System.out.println("aaaaaaaaa: " + resource);
 		
 		return Optional.of(new File(resource.toURI()).getAbsolutePath());
 	}

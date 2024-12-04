@@ -2,16 +2,16 @@ package ca.terrylockett.aoc2024.day03
 
 import ca.terrylockett.aoccommon.resources.Resources
 import java.io.File
+import java.io.InputStream
 import java.nio.charset.Charset
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
-val INPUT_FILE_PATH: String = Resources.getInputFilePath("input.txt").orElseThrow()
 
 fun main() {
-	var startTime = System.currentTimeMillis()
-	val input = File(INPUT_FILE_PATH).readText(Charset.defaultCharset())
+	val input: String = Resources.getInput("input.txt").orElseThrow()
 
+	var startTime = System.currentTimeMillis()
 	val part1Result = part01(input)
 	val part1Time = System.currentTimeMillis() - startTime
 	println("part1(${part1Time}ms): $part1Result")

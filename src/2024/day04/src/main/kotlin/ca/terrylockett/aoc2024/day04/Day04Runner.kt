@@ -2,9 +2,10 @@ package ca.terrylockett.aoc2024.day04
 
 import ca.terrylockett.aoccommon.resources.Resources
 
-fun main() {
-	val input: String = Resources.getInput("input.txt").orElseThrow()
 
+val input: String = Resources.getInput("input.txt").orElseThrow()
+
+fun main() {
 	println("2024 day04 part1: ${part1(input)}")
 	println("2024 day04 part2: ${part2(input)}")
 }

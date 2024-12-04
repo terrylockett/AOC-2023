@@ -29,8 +29,10 @@ tasks.register("newModule") {
         createAndPopulateFile("${projectDir.path}/build.gradle.kts", year, projectName, buildDotGradleContentsKotlin)
         val srcMainJava = createDir("${projectDir.path}/src/main/kotlin/ca/terrylockett/aoc$year/$projectName")
         val srcTestJava = createDir("${projectDir.path}/src/test/kotlin/ca/terrylockett/aoc$year/$projectName")
+        val srcBenchJava = createDir("${projectDir.path}/src/jmh/kotlin/ca/terrylockett/aoc$year/$projectName")
         createAndPopulateFile("$srcMainJava/${capitalizeFirstChar(projectName)}Runner.kt", year, projectName, mainClassContentsKotlin)
         createAndPopulateFile("$srcTestJava/Test${capitalizeFirstChar(projectName)}.kt", year, projectName, testClassContentsKotlin)
+        createAndPopulateFile("$srcBenchJava/Bench${capitalizeFirstChar(projectName)}.kt", year, projectName, benchContentsKotlin)
     } 
     if(lang == "java") {
         createAndPopulateFile("${projectDir.path}/build.gradle.kts", year, projectName, buildDotGradleContentsJava)
@@ -112,11 +114,19 @@ package ca.terrylockett.aoc%1${'$'}s.%2${'$'}s;
 
 import ca.terrylockett.aoccommon.resources.Resources;
 
-fun main() {
-    val inputFile: String = Resources.getInputFilePath("input.txt").orElseThrow()
+val input: String = Resources.getInput("input.txt").orElseThrow()
 
-    //println("%1${'$'}s %2${'$'}s part1: TODO")
-    //println("%1${'$'}s %2${'$'}s part2: TODO")
+fun main() {
+    //println("%1${'$'}s %2${'$'}s part1: ${'$'}{part1(input)}")
+    //println("%1${'$'}s %2${'$'}s part2: ${'$'}{part2(input)}")
+}
+
+fun part1(input: String): Int {
+    TODO()
+}
+
+fun part2(input: String): Int {
+    TODO()
 }
 
 """.replaceFirst("\n", "")
@@ -166,14 +176,44 @@ class Test%3${'$'}s {
 
     @Test
     fun part1() {
-        val inputFilePath = Resources.getInputFilePath("test-input.txt").orElseThrow()
+        val input = Resources.getInput("test-input.txt").orElseThrow()
         assertEquals(0, 0)
     }
     
 //    @Test
 //    fun part2() {
-//        val inputFilePath = Resources.getInputFilePath("test-input.txt").orElseThrow()
+//        val input = Resources.getInput("test-input.txt").orElseThrow()
 //        assertEquals(0, 0)
 //    }
+}
+""".replaceFirst("\n", "")
+
+val benchContentsKotlin = """
+package ca.terrylockett.aoc%1${'$'}s.%2${'$'}
+
+import ca.terrylockett.aoccommon.resources.Resources
+import org.openjdk.jmh.annotations.Benchmark
+import org.openjdk.jmh.annotations.Scope
+import org.openjdk.jmh.annotations.Setup
+import org.openjdk.jmh.annotations.State
+
+@State(Scope.Benchmark)
+open class Bench%3${'$'}s {
+	private var input: String = ""
+	
+	@Setup
+	fun init() {
+		input = Resources.getInput("input.txt").orElseThrow()
+	}
+	
+	@Benchmark
+	fun part1(): Any {
+		return part1(input)
+	}
+
+	@Benchmark
+	fun part2(): Any {
+		return part2(input)
+	}
 }
 """.replaceFirst("\n", "")

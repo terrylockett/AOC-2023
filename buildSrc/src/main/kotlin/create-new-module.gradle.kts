@@ -189,7 +189,7 @@ class Test%3${'$'}s {
 """.replaceFirst("\n", "")
 
 val benchContentsKotlin = """
-package ca.terrylockett.aoc%1${'$'}s.%2${'$'}
+package ca.terrylockett.aoc%1${'$'}s.%2${'$'}s
 
 import ca.terrylockett.aoccommon.resources.Resources
 import org.openjdk.jmh.annotations.Benchmark

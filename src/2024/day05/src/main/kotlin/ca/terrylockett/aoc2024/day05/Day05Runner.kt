@@ -6,7 +6,7 @@ val input: String = Resources.getInput("input.txt").orElseThrow()
 
 fun main() {
 	println("2024 day05 part1: ${part1(input)}")
-	// println("2024 day05 part2: ${part2(input)}")
+	println("2024 day05 part2: ${part2(input)}")
 }
 
 data class Pair(val x: Int, val y: Int)
@@ -36,6 +36,42 @@ fun part1(input: String): Int {
 	return total
 }
 
+fun part2(input: String): Int {
+	val safetyManual = createSafetyManual(input)
+	var total = 0
+	
+	val invalidRules = ArrayList<IntArray>()	
+	
+	for (rule in safetyManual.rules) {
+		for (pair in safetyManual.mappings) {
+			if (!rule.contains(pair.x) || !rule.contains(pair.y)) {
+				continue
+			}
+			if (rule.indexOf(pair.x) > rule.indexOf(pair.y)) {
+				invalidRules.add(rule)
+				break
+			}
+		}
+	}
+	
+	for (rule in invalidRules) {
+		val sortedList = rule.toMutableList().sortedWith(
+			Comparator { x, y ->
+				for (pair in safetyManual.mappings) {
+					if (x == pair.y && y == pair.x) {
+						return@Comparator -1
+					}
+				}
+				0
+			},
+		).toMutableList()
+		
+		total += sortedList[sortedList.size / 2]
+	}
+	
+	return total
+}
+
 fun createSafetyManual(input: String): SafetyManual {
 	val lines = input.lines()
 
@@ -58,8 +94,4 @@ fun createSafetyManual(input: String): SafetyManual {
 	}
 
 	return SafetyManual(mappings, rules)
-}
-
-fun part2(input: String): Int {
-	TODO()
 }
